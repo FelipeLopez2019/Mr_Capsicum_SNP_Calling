@@ -1,16 +1,18 @@
-#!/bin/bash
-#$ -N script_Allium
-#$ -V
-#$ -l h_vmem=20G
-#$ -l h_data=20G
-#$ -S /bin/bash
-#$ -pe PE 1
-#$ -cwd
+#!/bin/sh
+#SBATCH --partition=bigmem
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=24
+#SBATCH --time=2-00:00:00
+#SBATCH --job-name=Allium01
+#SBATCH -o %x_%j.out      # File to which STDOUT will be written
+#SBATCH -e %x_%j.err      # File to which STDERR will be written
 
+module load python/3.9_miniconda-4.10.3
+source activate gatk4
 
-# cd /home/llopez/Allium/GATK/reference
+cd /home/serverxxxx-lflopezh/genome/Espeletia
 # Genome indexing for BWA
-bwa index /home/frodaf/vg-v1.46.0/input/Capsicum/reads/Trimming_Felipe/Genomes/GCA_002878395.3_UCD10Xv1.1_genomic.fasta
+bwa index /home/serverxxxx-lflopezh/genome/GCA_002878395.3_UCD10Xv1.1_genomic.fasta
 # Creation of 2 new index files for reference (in formats used by Samtools and GATK)
-samtools faidx /home/frodaf/vg-v1.46.0/input/Capsicum/reads/Trimming_Felipe/Genomes/GCA_002878395.3_UCD10Xv1.1_genomic.fasta
-java -jar /home/frodaf/vg-v1.46.0/input/Capsicum/reads/Trimming_Felipe/GATK/gatk-4.2.2.0/gatk-package-4.2.2.0-local.jar CreateSequenceDictionary -R /home/frodaf/vg-v1.46.0/input/Capsicum/reads/Trimming_Felipe/Genomes/GCA_002878395.3_UCD10Xv1.1_genomic.fasta -O /home/frodaf/vg-v1.46.0/input/Capsicum/reads/Trimming_Felipe/Genomes/GCA_002878395.3_UCD10Xv1.1_genomic.dict
+samtools faidx /home/serverxxxx-lflopezh/genome/GCA_002878395.3_UCD10Xv1.1_genomic.fasta
+gatk CreateSequenceDictionary -R /home/serverxxxx-lflopezh/genome/GCA_002878395.3_UCD10Xv1.1_genomic.fasta -O /home/serverxxxx-lflopezh/genome/GCA_002878395.3_UCD10Xv1.1_genomic.dict

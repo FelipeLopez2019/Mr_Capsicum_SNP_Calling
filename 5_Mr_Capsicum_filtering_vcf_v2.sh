@@ -1,12 +1,16 @@
-#!/bin/bash
-#$ -N script_Allium
-#$ --variant
-#$ -l h_vmem=20G
-#$ -l h_data=20G
-#$ -S /bin/bash
-#$ -pe PE 1
-#$ -cwd
+#!/bin/sh
+#SBATCH --partition=longjobs
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=32
+#SBATCH --time=13-00:00:00
+#SBATCH --job-name=Allium01
+#SBATCH -o %x_%j.out      # File to which STDOUT will be written
+#SBATCH -e %x_%j.err      # File to which STDERR will be written
+#SBATCH --mail-type=ALL
 
+
+module load python/3.9_miniconda-4.10.3
+source activate gatk4
 
 
 # Define los parámetros de filtrado
@@ -17,18 +21,15 @@ min_depth=10                     # Profundidad mínima de cobertura
 max_depth=100                    # Profundidad máxima de cobertura
 
 
-# Define el archivo de entrada y salida
-input_vcf="/home/frodaf/vg-v1.46.0/input/Capsicum/reads/Trimming_Felipe/GATK/finalisimo3.vcf"
-output_vcf="/home/frodaf/vg-v1.46.0/input/Capsicum/reads/Trimming_Felipe/GATK/finalisimo3_clean.vcf"
-
-# Paso 1: Filtrar por porcentaje de datos faltantes
-vcftools --vcf $input_vcf --max-missing missing_loci --recode --out filtered_na
-
-# Paso 2: Filtrar por profundidad de cobertura
-vcftools --vcf filtered_na.recode.vcf --minDP min_depth --recode --out filtered_na_depth
-
-# Filtra por frecuencia alélica mínima
-vcftools --vcf filtered_na_depth.recode.vcf --maf $maf_threshold --recode --out $output_vcf
-
-# Limpieza de archivos temporales
-rm filtered_na.recode.vcf filtered_na_depth.recode.vcf
+cftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR1.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR1.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR2.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR2.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR3.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR3.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR4.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR4.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR5.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR5.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR6.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR6.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR7.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR7.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR8.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR8.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR9.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR9.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR10.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR10.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR11.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR11.depured.vcf
+vcftools --gzvcf /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR12.vcf --max-missing 0.7 --minDP 3 --recode --out /home/serverxxxx-lflopezh/Capsicum_GATK4/VCF_final_CHR12.depured.vcf
